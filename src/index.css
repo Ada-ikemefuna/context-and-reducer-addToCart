@@ -7,7 +7,42 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.App{
+  
+  max-width: 500px;
+  margin: 0 auto;
+
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+a{
+  text-decoration: none;
+  color: white;
+}
+
+.header{
+  display: flex;
+  align-items: center;
+  color: antiquewhite;
+  height: 60px;
+  background-color: brown;
+}
+
+.header >* {
+  margin-right: 50px;
+  padding-left: 10px;
+}
+
+.card{
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px 10px;
+}
+.card img{
+  height: 300px;
+  width: 300px;
 }
