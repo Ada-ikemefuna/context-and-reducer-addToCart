@@ -1,24 +1,56 @@
 import React from 'react';
-import { useDispatchCart } from './CartContext';
+import { Button, Card } from 'react-bootstrap';
+import { CartState } from '../context/CartContext';
+import Rating from './Rating';
 
-const Product = ({product}) => {
-  const dispatch = useDispatchCart();
+const Product = ({prod}) => {
+  const {state: {cart},
+  dispatch } = CartState();
 
-  const addToCart = (item) => {
-    dispatch({type: "ADD", item})
-  }
   return (
-    <div>
-        <div className="card">
-            <img src={product.image} alt="a pic" />
-            <div className="product_info">
-                <h1 className="head">{product.head}</h1>
-                <h2 className="price">${product.price}</h2>
-                <p className="desc">{product.title}</p>
-            </div>
-            <button onClick={() => addToCart(product)}>Add Item</button>
-            <hr />
-        </div>
+    <div className='products'>
+      <Card>
+        <Card.Img variant='top' src={prod.image} alt={prod.name}/>
+        <Card.Body>
+          <Card.Title>{prod.name}</Card.Title>
+          <Card.Subtitle style={{paddingBottom: 10}}>
+            <span>$ {prod.price.split(".")[0]}</span>
+            {prod.fastDelivery ? (
+              <div>Fast Delivery</div>
+            ): (
+              <div>4 days Delivery</div>
+            )}
+            <Rating rating={prod.ratings}/>
+          </Card.Subtitle>
+              {
+                cart.some(p=> p.id === prod.id) ? (
+                  <Button 
+                  onClick={() => {
+                    dispatch({
+                      type: "REMOVE_FROM_CART",
+                      payload: prod,                   
+                    })
+                  }}
+                  variant="danger">
+                    Remove from cart
+                  </Button>
+                ): (
+                  <Button 
+                  onClick={() => {
+                    dispatch({
+                      type: "ADD_TO_CART",
+                      payload: prod,                    })
+                  }}
+                  disabled={!prod.inStock}>
+                    {!prod.inStock? "Out of Stock" : "Add to cart"}
+                  </Button>
+                )
+              }
+
+          
+
+        </Card.Body>
+      </Card>
     </div>
   )
 }

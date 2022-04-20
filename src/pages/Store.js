@@ -1,39 +1,82 @@
-import React from 'react'
-import Product from '../components/Product'
+import React from 'react';
+import Product from '../components/Product';
+import { CartState } from '../context/CartContext';
+import Filters from '../components/Filters';
 
 const Store = () => {
-    const products = [
-        {
-            id:'1',
-            head: "Bag",
-            title: "The new Unified Harness shoulder straps are crazy comfortable making it that much easier to walk across the city with your laptop.",
-            price: 110.96,
-            image: "https://m.media-amazon.com/images/I/41l6VFfhYAL.jpg",
-        },
-        {
-            id:'2',
-            head: "Shoes",
-            title: "The new Unified Harness shoulder straps are crazy comfortable making it that much easier to walk across the city with your laptop.",
-            price: 299.8,
-            image: "https://media.gettyimages.com/photos/canvas-shoes-picture-id171224469?k=20&m=171224469&s=612x612&w=0&h=-gCNzSsAb9abkuq2ZH3Dwr9uT-FV2AcCDGK7Q1qJ41E=",
-        },
-        {
-            id:'3',
-            head: "Bonnet",
-            title: "The new Unified Harness shoulder straps are crazy comfortable making it that much easier to walk across the city with your laptop.",
-            price: 34.96,
-            image: "https://media.gettyimages.com/photos/closeup-of-cloth-bonnet-picture-id57612718?k=20&m=57612718&s=612x612&w=0&h=ii6La4tYYjpORlo0R20rRPacl_jaCIImqtJw6hy_q94=",
-        },
-    ]
+  const {
+  state: {products},
+  productState: {byStock, byRating, byFastDelivery, sort},
+   } = CartState();
 
 
+  const transformProducts = () => {
+    let sortedProducts = products;
+
+    if(sort){
+      sortedProducts.sort((a, b) => (
+        sort === "lowToHigh"? a.price - b.price: b.price - a.price
+      ))
+    }
+
+    if(!byStock){
+      sortedProducts = sortedProducts.filter((prod) => prod.inStock)
+    }
+    return sortedProducts;
+  }
+  
   return (
-    <div>
-        {products.map(product => (
-            <Product key={product.id} product={product}/>
-        ))}
+    <div className='home'>
+       <Filters/> 
+    <div className="productContainer">
+      {transformProducts().map(prod => {
+       return <Product prod={prod} key={prod.id}/>
+    })};
+    </div>
     </div>
   )
 }
 
 export default Store
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
